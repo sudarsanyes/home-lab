@@ -1,0 +1,161 @@
+Here you go, save this as index.html:
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>razoryes</title>
+  <style>
+    :root {
+      --bg: #070a0f;
+      --terminal: #0d1117;
+      --border: rgba(125, 255, 177, 0.18);
+      --text: #d6ffe4;
+      --muted: #8b949e;
+      --prompt: #7dffb1;
+      --output: #e6edf3;
+      --glow: rgba(125, 255, 177, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background:
+        radial-gradient(circle at top, rgba(31, 111, 75, 0.18), transparent 36rem),
+        linear-gradient(180deg, #090d14 0%, var(--bg) 100%);
+      color: var(--text);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    body {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 1.5rem;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 100% 4px;
+      opacity: 0.22;
+      mix-blend-mode: screen;
+    }
+
+    .terminal {
+      width: min(720px, 100%);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: rgba(13, 17, 23, 0.86);
+      box-shadow: 0 0 48px var(--glow), 0 24px 80px rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(12px);
+      overflow: hidden;
+    }
+
+    .terminal-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .dot {
+      width: 0.72rem;
+      height: 0.72rem;
+      border-radius: 999px;
+      background: var(--muted);
+      opacity: 0.9;
+    }
+
+    .dot:nth-child(1) { background: #ff5f57; }
+    .dot:nth-child(2) { background: #ffbd2e; }
+    .dot:nth-child(3) { background: #28c840; }
+
+    .title {
+      margin-left: auto;
+      color: var(--muted);
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+    }
+
+    .terminal-body {
+      padding: clamp(1.5rem, 4vw, 2.4rem);
+      font-size: clamp(0.98rem, 2.4vw, 1.18rem);
+      line-height: 1.75;
+    }
+
+    .line {
+      white-space: pre-wrap;
+    }
+
+    .prompt {
+      color: var(--prompt);
+      text-shadow: 0 0 16px rgba(125, 255, 177, 0.32);
+    }
+
+    .output {
+      color: var(--output);
+      margin-bottom: 1.1rem;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 0.65ch;
+      height: 1.15em;
+      margin-left: 0.1rem;
+      transform: translateY(0.18em);
+      background: var(--prompt);
+      animation: blink 1s steps(2, start) infinite;
+      box-shadow: 0 0 16px rgba(125, 255, 177, 0.45);
+    }
+
+    @keyframes blink {
+      0%, 45% { opacity: 1; }
+      46%, 100% { opacity: 0; }
+    }
+
+    @media (max-width: 480px) {
+      .terminal {
+        border-radius: 14px;
+      }
+
+      .title {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="terminal" aria-label="Terminal style homepage">
+    <div class="terminal-bar" aria-hidden="true">
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="title">razoryes://terminal</span>
+    </div>
+
+    <section class="terminal-body">
+      <div class="line"><span class="prompt">razoryes@internet:~$</span> whoami</div>
+      <div class="line output">small human</div>
+
+      <div class="line"><span class="prompt">razoryes@internet:~$</span> cat curiosity.txt</div>
+      <div class="line output">large curiosity</div>
+
+      <div class="line"><span class="prompt">razoryes@internet:~$</span> status</div>
+      <div class="line output">still compiling...<span class="cursor" aria-hidden="true"></span></div>
+    </section>
+  </main>
+</body>
+</html>
