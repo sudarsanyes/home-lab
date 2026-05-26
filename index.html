@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,14 +7,17 @@
   <title>razoryes</title>
   <style>
     :root {
-      --bg: #070a0f;
-      --terminal: #0d1117;
-      --border: rgba(125, 255, 177, 0.18);
-      --text: #d6ffe4;
-      --muted: #8b949e;
-      --prompt: #7dffb1;
-      --output: #e6edf3;
-      --glow: rgba(125, 255, 177, 0.18);
+      --bg: #05070d;
+      --panel: rgba(9, 13, 21, 0.78);
+      --panel-2: rgba(255, 255, 255, 0.035);
+      --line: rgba(255, 255, 255, 0.075);
+      --text: #dce7f3;
+      --muted: #7d8997;
+      --prompt: #75ffad;
+      --accent: #92d7ff;
+      --warm: #ffd18a;
+      --danger: #ff7b72;
+      --glow: rgba(117, 255, 173, 0.14);
     }
 
     * {
@@ -22,21 +26,26 @@
 
     html,
     body {
-      margin: 0;
+      width: 100%;
       min-height: 100%;
+      margin: 0;
       background:
-        radial-gradient(circle at top, rgba(31, 111, 75, 0.18), transparent 36rem),
-        linear-gradient(180deg, #090d14 0%, var(--bg) 100%);
+        radial-gradient(circle at 18% 12%, rgba(117, 255, 173, 0.11), transparent 28rem),
+        radial-gradient(circle at 82% 78%, rgba(146, 215, 255, 0.11), transparent 30rem),
+        radial-gradient(circle at 50% 120%, rgba(255, 209, 138, 0.08), transparent 26rem),
+        linear-gradient(180deg, #080c14 0%, var(--bg) 100%);
       color: var(--text);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      overflow-x: hidden;
     }
 
     body {
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 1.5rem;
-      overflow: hidden;
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(1rem, 4vw, 2rem);
+      position: relative;
     }
 
     body::before {
@@ -44,79 +53,110 @@
       position: fixed;
       inset: 0;
       pointer-events: none;
-      background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px);
-      background-size: 100% 4px;
-      opacity: 0.22;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.014) 1px, transparent 1px);
+      background-size: 100% 4px, 4px 100%;
+      opacity: 0.18;
       mix-blend-mode: screen;
     }
 
-    .terminal {
-      width: min(720px, 100%);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      background: rgba(13, 17, 23, 0.86);
-      box-shadow: 0 0 48px var(--glow), 0 24px 80px rgba(0, 0, 0, 0.45);
-      backdrop-filter: blur(12px);
+    .shell {
+      width: min(880px, 100%);
+      border: 1px solid rgba(117, 255, 173, 0.14);
+      border-radius: 24px;
+      background: var(--panel);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
       overflow: hidden;
+      box-shadow:
+        0 0 90px rgba(0, 0, 0, 0.55),
+        0 0 55px var(--glow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.045);
     }
 
-    .terminal-bar {
+    .bar {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      padding: 0.85rem 1rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      background: rgba(255, 255, 255, 0.035);
+      gap: 0.55rem;
+      padding: 0.9rem 1rem;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.025);
     }
 
     .dot {
       width: 0.72rem;
       height: 0.72rem;
       border-radius: 999px;
-      background: var(--muted);
-      opacity: 0.9;
     }
 
     .dot:nth-child(1) { background: #ff5f57; }
-    .dot:nth-child(2) { background: #ffbd2e; }
+    .dot:nth-child(2) { background: #febc2e; }
     .dot:nth-child(3) { background: #28c840; }
 
-    .title {
+    .bar-title {
       margin-left: auto;
       color: var(--muted);
-      font-size: 0.82rem;
-      letter-spacing: 0.04em;
+      font-size: 0.76rem;
+      letter-spacing: 0.05em;
     }
 
-    .terminal-body {
-      padding: clamp(1.5rem, 4vw, 2.4rem);
-      font-size: clamp(0.98rem, 2.4vw, 1.18rem);
-      line-height: 1.75;
-    }
-
-    .line {
-      white-space: pre-wrap;
+    .body {
+      padding: clamp(1.3rem, 4vw, 2.6rem);
     }
 
     .prompt {
       color: var(--prompt);
-      text-shadow: 0 0 16px rgba(125, 255, 177, 0.32);
+      text-shadow: 0 0 18px rgba(117, 255, 173, 0.25);
+    }
+
+    .cmd {
+      margin: 0 0 0.55rem;
+      font-size: clamp(0.86rem, 1.7vw, 1rem);
+      color: var(--text);
+      overflow-wrap: anywhere;
+    }
+
+    .line {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .prompt {
+      color: var(--prompt);
+      text-shadow: 0 0 18px rgba(117, 255, 173, 0.25);
     }
 
     .output {
-      color: var(--output);
-      margin-bottom: 1.1rem;
+      color: var(--text);
+      margin-bottom: 0.9rem;
+      padding-left: 0;
+      line-height: 1.7;
+    }
+
+    .output a {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px dotted rgba(146, 215, 255, 0.45);
+      padding-bottom: 1px;
+      opacity: 0.95;
+      transition: border-color 0.18s ease, opacity 0.18s ease;
+    }
+
+    .output a:hover {
+      opacity: 1;
+      border-color: rgba(146, 215, 255, 0.9);
     }
 
     .cursor {
       display: inline-block;
       width: 0.65ch;
-      height: 1.15em;
-      margin-left: 0.1rem;
+      height: 1.1em;
+      margin-left: 0.12rem;
       transform: translateY(0.18em);
       background: var(--prompt);
       animation: blink 1s steps(2, start) infinite;
-      box-shadow: 0 0 16px rgba(125, 255, 177, 0.45);
+      box-shadow: 0 0 14px rgba(117, 255, 173, 0.42);
     }
 
     @keyframes blink {
@@ -124,32 +164,59 @@
       46%, 100% { opacity: 0; }
     }
 
-    @media (max-width: 480px) {
-      .terminal {
-        border-radius: 14px;
+    @media (max-width: 680px) {
+      body {
+        align-items: flex-start;
+        padding: 1rem;
       }
 
-      .title {
+      .shell {
+        border-radius: 18px;
+      }
+
+      .bar-title {
         display: none;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        min-height: auto;
       }
     }
   </style>
 </head>
 <body>
-  <main class="terminal" aria-label="Terminal style homepage">
-    <div class="terminal-bar" aria-hidden="true">
+  <main class="shell" aria-label="About razoryes">
+    <div class="bar" aria-hidden="true">
       <span class="dot"></span>
       <span class="dot"></span>
       <span class="dot"></span>
-      <span class="title">razoryes://terminal</span>
+      <span class="bar-title">razoryes://about</span>
     </div>
 
-    <section class="terminal-body">
+    <section class="body">
       <div class="line"><span class="prompt">razoryes@internet:~$</span> whoami</div>
-      <div class="line output">small human</div>
+      <div class="line output">small human
+</div>
 
       <div class="line"><span class="prompt">razoryes@internet:~$</span> cat curiosity.txt</div>
-      <div class="line output">large curiosity</div>
+      <div class="line output">large curiosity
+</div>
+
+      <div class="line"><span class="prompt">razoryes@internet:~$</span> ls interests/</div>
+      <div class="line output">code  design  photography  aviation  mountains
+</div>
+
+      <div class="line"><span class="prompt">razoryes@internet:~$</span> open code</div>
+      <div class="line output"><a href="https://github.com/sudarsanyes" target="_blank" rel="noopener noreferrer">github.com/sudarsanyes ↗</a>
+</div>
+
+      <div class="line"><span class="prompt">razoryes@internet:~$</span> open photography</div>
+      <div class="line output"><a href="https://www.instagram.com/sudarsanyes.me/" target="_blank" rel="noopener noreferrer">instagram.com/sudarsanyes.me ↗</a>
+</div>
 
       <div class="line"><span class="prompt">razoryes@internet:~$</span> status</div>
       <div class="line output">still compiling...<span class="cursor" aria-hidden="true"></span></div>
